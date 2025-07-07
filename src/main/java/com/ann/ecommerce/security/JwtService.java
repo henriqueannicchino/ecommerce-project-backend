@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class JwtService {
@@ -20,10 +22,15 @@ public class JwtService {
 
     public String generateToken(Customer customer){
         try{
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("firstName", customer.getFirstName());
+            payload.put("lastName", customer.getLastName());
+            
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
                     .withIssuer("auth-api")
                     .withSubject(customer.getEmail())
+                    .withPayload(payload)
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
             return token;

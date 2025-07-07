@@ -102,4 +102,9 @@ public class Customer implements UserDetails{
     public boolean isEnabled(){
         return true;
     }
+
+    public Customer orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
+    }
 }

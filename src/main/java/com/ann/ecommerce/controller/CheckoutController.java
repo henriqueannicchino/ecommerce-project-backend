@@ -18,10 +18,11 @@ public class CheckoutController {
     }
 
     @PostMapping("/purchase")
-    public PurchaseResponse placeOrder(@RequestBody PurchaseRequest purchase) {
+    public PurchaseResponse placeOrder(@RequestBody PurchaseRequest purchase,
+            @RequestHeader("Authorization") String authorizationHeader) {
 
-        PurchaseResponse purchaseResponse = checkoutService.placeOrder(purchase);
+        String token = authorizationHeader.substring(7);
 
-        return purchaseResponse;
+        return checkoutService.placeOrder(purchase, token);
     }
 }

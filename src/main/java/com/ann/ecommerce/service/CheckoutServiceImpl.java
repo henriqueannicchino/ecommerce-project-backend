@@ -6,15 +6,21 @@ import com.ann.ecommerce.dto.PurchaseResponse;
 import com.ann.ecommerce.entity.Customer;
 import com.ann.ecommerce.entity.Order;
 import com.ann.ecommerce.entity.OrderItem;
+import com.ann.ecommerce.security.JwtService;
+
 import jakarta.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.UUID;
 
 @Service
-public class CheckoutServiceImpl implements CheckoutService{
+public class CheckoutServiceImpl implements CheckoutService {
 
+    @Autowired
+    JwtService jwtService;
     private CustomerRepository customerRepository;
 
     public CheckoutServiceImpl(CustomerRepository customerRepository) {
@@ -23,7 +29,9 @@ public class CheckoutServiceImpl implements CheckoutService{
 
     @Override
     @Transactional
-    public PurchaseResponse placeOrder(PurchaseRequest purchase) {
+    public PurchaseResponse placeOrder(PurchaseRequest purchase, String token) {
+        try {
+        var email = jwtService.validateToken(token);
 
         // retrieve the order info from dto
         Order order = purchase.getOrder();
@@ -41,7 +49,7 @@ public class CheckoutServiceImpl implements CheckoutService{
         order.setShippingAddress(purchase.getShippingAddress());
 
         // populate customer with order
-        Customer customer = customerRepository.findById(purchase.customerId)
+        Customer customer = customerRepository.getByEmail(email)
         .orElseThrow(() -> new RuntimeException("Customer not found"));
         customer.add(order);
 
@@ -50,6 +58,10 @@ public class CheckoutServiceImpl implements CheckoutService{
 
         // return a response
         return new PurchaseResponse(orderTrackingNumber);
+        } catch (Exception ex) {
+            System.err.println("error on place order" + ex);
+            return new PurchaseResponse("");
+        }
     }
 
     private String generateOrderTrackingNumber() {
@@ -57,4 +69,3 @@ public class CheckoutServiceImpl implements CheckoutService{
         return UUID.randomUUID().toString();
     }
 }
-

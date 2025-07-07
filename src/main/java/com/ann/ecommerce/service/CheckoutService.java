@@ -5,5 +5,5 @@ import com.ann.ecommerce.dto.PurchaseResponse;
 
 public interface CheckoutService {
 
-    PurchaseResponse placeOrder(PurchaseRequest purchase);
+    PurchaseResponse placeOrder(PurchaseRequest purchase, String token);
 }
