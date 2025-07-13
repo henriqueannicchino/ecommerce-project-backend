@@ -14,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
-@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
