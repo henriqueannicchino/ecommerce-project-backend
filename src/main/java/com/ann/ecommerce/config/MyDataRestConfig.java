@@ -1,6 +1,7 @@
 package com.ann.ecommerce.config;
 
 import com.ann.ecommerce.entity.Country;
+import com.ann.ecommerce.entity.Order;
 import com.ann.ecommerce.entity.Product;
 import com.ann.ecommerce.entity.ProductCategory;
 import com.ann.ecommerce.entity.State;
@@ -47,6 +48,9 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
         // disable HTTP methods for State: PUT, POST and DELETE
         disableHttpMethods(State.class, config, theUnsupportedActions);
+
+        // disable HTTP methods for Order: PUT, POST and DELETE
+        disableHttpMethods(Order.class, config, theUnsupportedActions);
 
         // call an internal helper method
         exposeIds(config);

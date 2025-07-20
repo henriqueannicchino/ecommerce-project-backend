@@ -16,6 +16,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity(name = "customer")
 @Table(name="customer")
 @Getter
@@ -46,6 +48,7 @@ public class Customer implements UserDetails{
     private UserRole roles;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Order> orders = new HashSet<>();
 
     public void add(Order order) {

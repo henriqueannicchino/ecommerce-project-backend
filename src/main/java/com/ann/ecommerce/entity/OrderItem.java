@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="order_item")
 @Getter
@@ -30,5 +32,6 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
 }
